@@ -17,6 +17,7 @@ public class anadirContactosActivity extends Activity implements View.OnClickLis
     EditText editText1;
     EditText editText2;
     EditText editText3;
+    EditText editText4;
     View button1;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class anadirContactosActivity extends Activity implements View.OnClickLis
         editText1 = (EditText) findViewById(R.id.editText1);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
+        editText4 = (EditText) findViewById(R.id.editText4);
 
         button1 = findViewById(R.id.button1);
 
@@ -38,9 +40,9 @@ public class anadirContactosActivity extends Activity implements View.OnClickLis
 
             HandlerDatabase handlerDatabase = new HandlerDatabase(this);
 
-            handlerDatabase.setContactData(editText1.getText().toString(),editText2.getText().toString(),editText3.getText().toString());
+            handlerDatabase.setContactData(editText1.getText().toString(),editText2.getText().toString(),editText3.getText().toString(),editText4.getText().toString());
 
-            Toast toast = Toast.makeText(this,"Contacto guardado: "+"\n"+editText1.getText().toString()+"\n"+editText2.getText().toString()+"\n"+editText3.getText().toString(), Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this,"Contacto guardado: "+"\n"+editText1.getText().toString()+"\n"+editText2.getText().toString()+"\n"+editText3.getText().toString()+"\nEmail: "+editText4.getText().toString(), Toast.LENGTH_LONG);
             toast.show();
             finish();
 

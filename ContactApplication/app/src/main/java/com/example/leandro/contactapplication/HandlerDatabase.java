@@ -21,9 +21,9 @@ public class HandlerDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String query,query2,query3,nombre, apellido, telefono;
+        String query;
 
-        query = "CREATE TABLE IF NOT EXISTS Contactos(Nombre VARCHAR, Apellido VARCHAR, Telefono INT);";
+        query = "CREATE TABLE IF NOT EXISTS Contactos(Nombre VARCHAR, Apellido VARCHAR, Telefono INT, Email VARCHAR);";
 
         sqLiteDatabase.execSQL(query);
 
@@ -34,31 +34,33 @@ public class HandlerDatabase extends SQLiteOpenHelper {
 
     }
 
-    public void setContactData(String nombre, String apellido, String numeroTelefono){
+    public void setContactData(String nombre, String apellido, String numeroTelefono, String email){
         ContentValues values = new ContentValues();
 
         values.put("Nombre",nombre);
         values.put("Apellido",apellido);
         values.put("Telefono",numeroTelefono);
+        values.put("Email",email);
 
         this.getWritableDatabase().insert("Contactos",null,values);
     }
 
     public String getContactData(int position){
         String resultado;
-        String columnas[] = {"Nombre","Apellido","Telefono"};
+        String columnas[] = {"Nombre","Apellido","Telefono","Email"};
 
         Cursor cursor = this.getReadableDatabase().query("Contactos",columnas,null,null,null,null,null);
 
-        int indexNombre, indexApellido, indexTelefono;
+        int indexNombre, indexApellido, indexTelefono, indexEmail;
 
         indexNombre = cursor.getColumnIndex("Nombre");
         indexApellido = cursor.getColumnIndex("Apellido");
         indexTelefono = cursor.getColumnIndex("Telefono");
+        indexEmail = cursor.getColumnIndex("Email");
 
         cursor.moveToPosition(position);
 
-        resultado = "Nombre : "+cursor.getString(indexNombre)+"\nApellido: "+cursor.getString(indexApellido)+"\nTelefono: "+cursor.getString(indexTelefono);
+        resultado = "Nombre : "+cursor.getString(indexNombre)+"\nApellido: "+cursor.getString(indexApellido)+"\nTelefono: "+cursor.getString(indexTelefono)+"\nEmail: "+cursor.getString(indexEmail);
 
         return resultado;
     }
@@ -110,10 +112,25 @@ public class HandlerDatabase extends SQLiteOpenHelper {
 
         return apellidoAux;
     }
-    public void setModifiedContactData(String nombre, String apellido, String telefono){
+    public String getEmail(String nombre){
+        String emailAux = "";
+        String columnas[] = {"Nombre","Email"};
+        Cursor cursor = this.getReadableDatabase().query("Contactos",columnas,null,null,null,null,null);
+        int indexNombre = cursor.getColumnIndex("Nombre");
+        int indexEmail = cursor.getColumnIndex("Email");
+
+        for (cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
+            if (cursor.getString(indexNombre).equals(nombre)){
+                emailAux = cursor.getString(indexEmail);
+            }
+        }
+
+        return emailAux;
+    }
+    public void setModifiedContactData(String nombre, String apellido, String telefono, String email){
 
         String query;
-        query = "UPDATE Contactos SET Nombre = '"+nombre+"', Apellido = '"+apellido+"', Telefono = '"+telefono+"' " +
+        query = "UPDATE Contactos SET Nombre = '"+nombre+"', Apellido = '"+apellido+"', Telefono = '"+telefono+"', Email = '"+email+"' " +
                 "WHERE (NOMBRE = '"+nombre+"' OR APELLIDO = '"+apellido+"' ) ";
         this.getWritableDatabase().execSQL(query);
     }

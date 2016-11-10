@@ -20,9 +20,9 @@ public class infoContactoActivity extends Activity implements View.OnClickListen
 
     Button button1, button2, button3, button4, button5;
     Bundle bundle;
-    String nombre, apellido, telefono;
+    String nombre, apellido, telefono, email;
     HandlerDatabase handlerDatabase;
-    EditText editText1, editText2, editText3;
+    EditText editText1, editText2, editText3, editText4;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,14 +40,17 @@ public class infoContactoActivity extends Activity implements View.OnClickListen
         handlerDatabase = new HandlerDatabase(getApplicationContext());
         apellido = handlerDatabase.getApellido(nombre);
         telefono = handlerDatabase.getTelefono(nombre);
+        email = handlerDatabase.getEmail(nombre);
 
         editText1 = (EditText) findViewById(R.id.editText1);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
+        editText4 = (EditText) findViewById(R.id.editText4);
 
         editText1.setText(nombre);
         editText2.setText(apellido);
         editText3.setText(telefono);
+        editText4.setText(email);
 
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
@@ -97,15 +100,17 @@ public class infoContactoActivity extends Activity implements View.OnClickListen
         if (view.getId() == R.id.button3){
             Intent intentmessage = new Intent(getApplicationContext(),messagesActivity.class);
             intentmessage.putExtra("booleano",2);
+            intentmessage.putExtra("emailAux",editText4.getText().toString());
             startActivity(intentmessage);
             finish();
+
         }
         //Button4 es Editar contacto.
         if (view.getId() == R.id.button4){
-            handlerDatabase.setModifiedContactData(editText1.getText().toString(),editText2.getText().toString(),editText3.getText().toString());
+            handlerDatabase.setModifiedContactData(editText1.getText().toString(),editText2.getText().toString(),editText3.getText().toString(),editText4.getText().toString());
             Toast toast = Toast.makeText(getApplicationContext(),"Contacto actualizado: "+
                     "\nNombre: "+editText1.getText().toString()+"\nApellido: "+
-                    editText2.getText().toString()+"\nTelefono: "+editText3.getText().toString(), Toast.LENGTH_LONG);
+                    editText2.getText().toString()+"\nTelefono: "+editText3.getText().toString()+"\nEmail: "+editText4.getText().toString(), Toast.LENGTH_LONG);
             toast.show();
             finish();
         }

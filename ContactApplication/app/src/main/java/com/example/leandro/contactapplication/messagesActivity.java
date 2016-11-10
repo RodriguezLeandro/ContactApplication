@@ -15,6 +15,7 @@ public class messagesActivity extends Activity implements View.OnClickListener {
     View button1;
     EditText editText1;
     boolean booleano = false;
+    String email = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class messagesActivity extends Activity implements View.OnClickListener {
 
         if (bundle != null){
             booleano = true;
+            email = (String)bundle.get("emailAux");
         }
         else{
             booleano = false;
@@ -43,9 +45,11 @@ public class messagesActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
         if (view.getId() == button1.getId()){
             if (booleano) {
+                System.out.print("El nombre que tenemos es : "+email);
                 Intent mensajenormal = new Intent();
                 mensajenormal.setAction(Intent.ACTION_SEND);
-                mensajenormal.putExtra(Intent.EXTRA_TEXT, editText1.getText().toString());
+                mensajenormal.putExtra(Intent.EXTRA_EMAIL,email);
+                mensajenormal.putExtra(android.content.Intent.EXTRA_TEXT, editText1.getText().toString());
                 mensajenormal.setType("text/plain");
                 startActivity(mensajenormal);
                 finish();
